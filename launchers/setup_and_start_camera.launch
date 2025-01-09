@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!-- General setup environemnt -->
+
+<launch>
+
+    <!-- start Kinect 2 Bridge -->
+    <include	file="$(find kinect2_bridge)/launch/kinect2_bridge.launch">
+    	<arg name="base_name"	default="kinect2"/>
+    	<arg name="sensor"	default="009527544947"/>
+    </include>
+    
+    <!--include	file="$(find kinect2_bridge)/launch/kinect2_bridge.launch">
+    	<arg name="base_name"	default="bci_camera"/>
+    	<arg name="sensor"	default="500258141742"/>
+    </include-->
+    
+</launch>
