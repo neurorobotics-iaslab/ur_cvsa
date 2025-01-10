@@ -94,7 +94,7 @@ bool UR_control::goHome() {
         ROS_ERROR("[UR_control] Error in moving to intermediate position");
         return false;
     }
-    joints = {-1.9337423483477991, -2.231931511555807, 2.3062686920166016, -1.626599136983053, -1.5628321806537073, -0.3018081823932093};
+    joints = {1.570805549621582, -1.570796314870016, -1.5706833044635218, -1.5707600752459925, -1.57070237794985, -1.5699833075152796};
     if(!this->goJoint(joints)){
         ROS_ERROR("[UR_control] Error in moving to home position");
         return false;

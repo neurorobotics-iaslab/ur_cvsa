@@ -22,8 +22,9 @@ struct Event{
 constexpr Event event_;
 
 struct Position_joints{
-    std::vector<std::vector<double>> joints_classes; // place here the positions
-    std::vector<double> joints_timeout;
+    std::vector<std::vector<double>> joints_classes = {{1.6201391220092773, -1.1530116240130823, -0.8488729635821741, -2.0379536787616175, -1.5707748571978968, -0.8482573668109339},
+                                                       {1.678596019744873, -1.1926682631122034, -2.6249547640429896, -2.056678120289938, -1.5708468596087855, -2.6241264978991907}}; // place here the positions
+    std::vector<double> joints_timeout = {1.4639124870300293, -1.1009696165667933, -1.5708625952350062, -1.9338977972613733, -1.570798699055807, -1.5702832380877894};
 };
 
 

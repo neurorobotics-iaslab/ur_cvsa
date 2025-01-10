@@ -43,8 +43,8 @@ target_link_libraries(${PROJECT_NAME}
             ${catkin_LIBRARIES}
 )
 
-add_executable(ur_node src/UR_control_node.cpp)
-target_link_libraries(ur_node 
+add_executable(ur_cvsa_node src/UR_control_node.cpp)
+target_link_libraries(ur_cvsa_node 
                           ${catkin_LIBRARIES} 
                           ${PROJECT_NAME}
                       )  

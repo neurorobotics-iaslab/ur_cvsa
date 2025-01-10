@@ -1,23 +1,32 @@
-#include <ur_cvsa/UR_control.h>
 #include <ros/ros.h>
+#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include <moveit_visual_tools/moveit_visual_tools.h>
+#include "ur_cvsa/UR_control.h"
 
+int main(int argc, char **argv) {
+    // Initialize the ROS node
+    ros::init(argc, argv, "UR_control_node");
+    ros::NodeHandle nh;
 
-int main(int argc, char** argv) {
+    // Start a ROS spinner
+    ros::AsyncSpinner spinner(1);
+    spinner.start();
 
-	// ros initialization
-	ros::init(argc, argv, "ur_cvsa_node");
+    // Set up MoveIt interfaces
+    moveit::planning_interface::MoveGroupInterface move_group("manipulator");
+    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
-	UR_control ur_control;
-	
-	if(ur_control.configure() == false) {
-		std::cerr<<"SETUP ERROR"<<std::endl;
-		return -1;
-	}
+    /* / Set up the visual tools for MoveIt! (Optional: for visualization)
+    moveit_visual_tools::MoveItVisualTools visual_tools("base_link");
+    visual_tools.deleteAllMarkers();
+    visual_tools.loadRemoteControl();
+    */
 
-	ROS_INFO("[INFO] Configuration done");
-	
-	ur_control.run();
-    
-	ros::shutdown();
-	return 0;
+    UR_control ur;
+    ur.configure();
+    ur.run();
+
+    ros::shutdown();
+    return 0;
 }
