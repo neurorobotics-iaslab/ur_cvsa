@@ -22,9 +22,10 @@ struct Event{
 constexpr Event event_;
 
 struct Position_joints{
-    std::vector<std::vector<double>> joints_classes = {{1.6201391220092773, -1.1530116240130823, -0.8488729635821741, -2.0379536787616175, -1.5707748571978968, -0.8482573668109339},
-                                                       {1.678596019744873, -1.1926682631122034, -2.6249547640429896, -2.056678120289938, -1.5708468596087855, -2.6241264978991907}}; // place here the positions
-    std::vector<double> joints_timeout = {1.4639124870300293, -1.1009696165667933, -1.5708625952350062, -1.9338977972613733, -1.570798699055807, -1.5702832380877894};
+    std::vector<std::vector<double>> joints_classes = {{-1.0177915732013147, -1.0552557150470179, 1.5992155075073242, -2.1148069540606897, -1.571134392415182, -1.0169943014727991},
+                                                       {-2.443615261708395, -1.0814431349383753, 1.641397476196289, -2.1309402624713343, -1.5708826223956507, -2.442632500325338}}; // place here the positions
+    std::vector<double> joints_timeout = {-1.570719067250387, -1.3460143248187464, 2.055833339691162, -2.2806666533099573, -1.5707867781268519, -1.5698874632464808};
+    std::vector<double> joints_home = {-1.570793628692627, -1.5709403196917933, 1.5708029905902308, -1.570796314870016, -1.5709064642535608, -1.5700791517840784};
 };
 
 
@@ -42,9 +43,9 @@ class UR_control{
         void run();
 
     private:
-        moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-        moveit::planning_interface::MoveGroupInterface move_group;
-        moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+        const moveit::core::JointModelGroup* joint_model_group_;
+        moveit::planning_interface::MoveGroupInterface move_group_;
+        moveit::planning_interface::MoveGroupInterface::Plan my_plan_;
 
         ros::NodeHandle nh_;
         ros::Subscriber sub_events_;

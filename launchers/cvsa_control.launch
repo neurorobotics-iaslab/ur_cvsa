@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="classes" default='[730, 731]' />
+    
+
+        <node pkg="ur_cvsa" type="ur_cvsa_node" name="ur_cvsa_node" output="screen">
+            <rosparam param="classes"  subst_value="True">$(arg classes)</rosparam>
+        </node>  
+
+   
+</launch>

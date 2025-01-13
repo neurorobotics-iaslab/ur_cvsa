@@ -13,16 +13,6 @@ int main(int argc, char **argv) {
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    // Set up MoveIt interfaces
-    moveit::planning_interface::MoveGroupInterface move_group("manipulator");
-    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-
-    /* / Set up the visual tools for MoveIt! (Optional: for visualization)
-    moveit_visual_tools::MoveItVisualTools visual_tools("base_link");
-    visual_tools.deleteAllMarkers();
-    visual_tools.loadRemoteControl();
-    */
-
     UR_control ur;
     ur.configure();
     ur.run();

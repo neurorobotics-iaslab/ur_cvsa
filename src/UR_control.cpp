@@ -1,9 +1,9 @@
 #include "ur_cvsa/UR_control.h"
 
-UR_control::UR_control() : move_group("manipulator"), nh_("~") {    
+UR_control::UR_control() : move_group_("ur5_arm"), nh_("~") {    
     this->sub_events_ = this->nh_.subscribe("/events/bus", 1, &UR_control::neuro_callback, this);
 
-    this->srv_robot_motion_ = this->nh_.advertiseService("cvsa/robot_motion", &UR_control::robot_state, this);
+    this->srv_robot_motion_ = this->nh_.advertiseService("/cvsa/robot_motion", &UR_control::robot_state, this);
 }
 
 bool UR_control::configure(){
@@ -14,8 +14,7 @@ bool UR_control::configure(){
 
     this->robot_is_moving_ = false;
     this->m_max_attempt_ = 10;
-
-    // TODO: set the joints for the different classes, parameter this->position_.joints_classes e timeout
+    this-> joint_model_group_ = this->move_group_.getCurrentState()->getJointModelGroup("ur5_arm");
 
     return true;
 }
@@ -34,20 +33,20 @@ bool UR_control::robot_state(std_srvs::Trigger::Request &req, std_srvs::Trigger:
 }
 
 bool UR_control::goJoint(std::vector<double> joints) {
-    this->move_group.getCurrentJointValues();
+    this->move_group_.getCurrentJointValues();
     bool plan_success = false;
     bool exec_success = false;
-    this->move_group.setJointValueTarget(joints);
+    this->move_group_.setJointValueTarget(joints);
     for(int i = 0; i < this->m_max_attempt_; i++){
-        plan_success = (this->move_group.plan(this->my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+        plan_success = (this->move_group_.plan(this->my_plan_) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
         if(plan_success){
-            ros::Duration(0.2).sleep();
+            //ros::Duration(0.2).sleep();
             break;
         }
         ros::Duration(0.5).sleep();
     }
     if(plan_success){
-        exec_success = (this->move_group.execute(this->my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+        exec_success = (this->move_group_.execute(this->my_plan_) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
         if(!exec_success){
             ROS_ERROR("[UR_control] Execution failed!");
             return false;
@@ -61,12 +60,12 @@ bool UR_control::goJoint(std::vector<double> joints) {
 }
 
 bool UR_control::goPose(geometry_msgs::Pose pose) {
-    this->move_group.getCurrentState();
+    this->move_group_.getCurrentState();
     bool plan_success = false;
     bool exec_success = false;
-    this->move_group.setPoseTarget(pose);
+    this->move_group_.setPoseTarget(pose);
     for(int i = 0; i < this->m_max_attempt_; i++){
-        plan_success = (this->move_group.plan(this->my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+        plan_success = (this->move_group_.plan(this->my_plan_) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
         if(plan_success){
             ros::Duration(0.2).sleep();
             break;
@@ -74,7 +73,7 @@ bool UR_control::goPose(geometry_msgs::Pose pose) {
         ros::Duration(0.5).sleep();
     }
     if(plan_success){
-        exec_success = (this->move_group.execute(this->my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+        exec_success = (this->move_group_.execute(this->my_plan_) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
         if(!exec_success){
             ROS_ERROR("[UR_control] Execution failed!");
             return false;
@@ -88,14 +87,8 @@ bool UR_control::goPose(geometry_msgs::Pose pose) {
 }
 
 bool UR_control::goHome() {
-    // intermediate position
-    std::vector<double> joints = {-1.7246678511248987, -1.7996023336993616, 2.1641526222229004, -1.9401467482196253, -1.5369065443622034, -0.11355048814882451};
-    if(!this->goJoint(joints)){
-        ROS_ERROR("[UR_control] Error in moving to intermediate position");
-        return false;
-    }
-    joints = {1.570805549621582, -1.570796314870016, -1.5706833044635218, -1.5707600752459925, -1.57070237794985, -1.5699833075152796};
-    if(!this->goJoint(joints)){
+    ROS_INFO("[UR_control] Moving to home position");
+    if(!this->goJoint(this->position_.joints_home)){
         ROS_ERROR("[UR_control] Error in moving to home position");
         return false;
     }
