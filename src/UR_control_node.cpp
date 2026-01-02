@@ -2,7 +2,7 @@
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_visual_tools/moveit_visual_tools.h>
-#include "ur_cvsa/UR_control.h"
+#include "ur_bci/UR_control.h"
 
 int main(int argc, char **argv) {
     // Initialize the ROS node

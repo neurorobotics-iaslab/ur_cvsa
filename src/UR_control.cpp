@@ -1,4 +1,4 @@
-#include "ur_cvsa/UR_control.h"
+#include "ur_bci/UR_control.h"
 
 UR_control::UR_control() : move_group_("ur5_arm"), nh_("~") {    
     this->sub_events_ = this->nh_.subscribe("/events/bus", 1, &UR_control::neuro_callback, this);
