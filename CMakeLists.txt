@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(ur_cvsa)
+project(ur_bci)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -43,8 +43,8 @@ target_link_libraries(${PROJECT_NAME}
             ${catkin_LIBRARIES}
 )
 
-add_executable(ur_cvsa_node src/UR_control_node.cpp)
-target_link_libraries(ur_cvsa_node 
+add_executable(ur_bci_node src/UR_control_node.cpp)
+target_link_libraries(ur_bci_node 
                           ${catkin_LIBRARIES} 
                           ${PROJECT_NAME}
                       )  
